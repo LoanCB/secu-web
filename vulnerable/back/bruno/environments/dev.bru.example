@@ -1,0 +1,6 @@
+vars {
+  base_url: http://localhost:3100/api/v1
+  token: 
+  email: 
+  password: 
+}

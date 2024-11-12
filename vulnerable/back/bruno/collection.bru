@@ -1,0 +1,24 @@
+auth {
+  mode: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+script:post-response {
+  // import fetch from 'node-fetch'
+  
+  // if (res.body.message === 'Token expired') {
+  //  const originalRequest = req
+  //  fetch(`{{base_url}}/auth/login`, {
+  //    method: 'POST',
+  //    headers: {
+  //      'Content-Type': 'application/json',
+  //    },
+  //    body: JSON.stringify({ email: `{{email}}`, password: `{{password}}` }),
+  //  }).then((response) => {
+  //    console.log(req)
+  //  })
+  // }
+}

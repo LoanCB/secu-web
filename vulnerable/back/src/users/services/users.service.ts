@@ -1,17 +1,17 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { User } from '../entities/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Role } from '../entities/roles.entity';
-import { CreateUserDto, FormattedCreatedUserDto } from '../dto/create-user.dto';
-import { CustomHttpException } from 'src/common/helpers/custom.exception';
 import { hash } from 'bcrypt';
-import { UpdateUserDto } from '../dto/update-user.dto';
-import { ErrorCodesService } from 'src/common/services/error-codes.service';
-import { PatchUserDto } from '../dto/patch-user.dto';
-import { getEntityFilteredList } from 'src/common/helpers/filter-repository.helper';
 import { PaginationParamsDto } from 'src/common/dto/pagination-params.dto';
+import { CustomHttpException } from 'src/common/helpers/custom.exception';
+import { getEntityFilteredList } from 'src/common/helpers/filter-repository.helper';
+import { ErrorCodesService } from 'src/common/services/error-codes.service';
 import { EntityFilteredListResults } from 'src/common/types/filter-repository.types';
+import { Repository } from 'typeorm';
+import { CreateUserDto, FormattedCreatedUserDto } from '../dto/create-user.dto';
+import { PatchUserDto } from '../dto/patch-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { Role } from '../entities/roles.entity';
+import { User } from '../entities/users.entity';
 
 @Injectable()
 export class UsersService {

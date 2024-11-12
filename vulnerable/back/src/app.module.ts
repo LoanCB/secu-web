@@ -4,10 +4,11 @@ import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { LoggingMiddleware } from './common/middlewares/logging.middleware';
 import { AppDataSource } from './orm/data-source';
+import { TicketingModule } from './ticketing/ticketing.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(AppDataSource), AuthModule, UsersModule, CommonModule],
+  imports: [TypeOrmModule.forRoot(AppDataSource), AuthModule, UsersModule, CommonModule, TicketingModule],
   controllers: [],
   providers: [],
 })

@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { SoftDeleteEntity } from 'src/common/entities/soft-delete.entity';
-import { Column, Entity, ManyToOne, Relation } from 'typeorm';
+import { Ticket } from 'src/ticketing/entities/tickets.entity';
+import { Column, Entity, ManyToOne, OneToMany, Relation } from 'typeorm';
 import { Role } from './roles.entity';
 
 @Entity()
@@ -31,4 +32,7 @@ export class User extends SoftDeleteEntity {
   @ApiProperty({ type: () => Role })
   @ManyToOne(() => Role, (role) => role.users)
   role: Relation<Role>;
+
+  @OneToMany(() => Ticket, (ticket) => ticket.user)
+  tickets: Relation<Ticket>[];
 }

@@ -14,6 +14,6 @@ export class Ticket extends SoftDeleteEntity {
   @ManyToOne(() => User, (user) => user.tickets)
   user: Relation<User>;
 
-  @OneToMany(() => File, (file) => file.ticket)
+  @OneToMany(() => File, (file) => file.ticket, { cascade: true })
   files: Relation<File>[];
 }

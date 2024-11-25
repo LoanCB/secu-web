@@ -1,4 +1,17 @@
-import { Body, Controller, Get, HttpStatus, Param, ParseIntPipe, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { GetUser } from 'src/common/decorators/user.decorator';
@@ -12,6 +25,7 @@ import { RolesGuard } from 'src/users/guards/roles.guard';
 import { RoleType } from 'src/users/types/role-type';
 import { CreateTicketDto } from '../dto/create-ticket.dto';
 import { UsersListDto } from '../dto/tickets-list.dto';
+import { UpdateTicketDto } from '../dto/update-ticket.dto';
 import { Ticket } from '../entities/tickets.entity';
 import { TicketsService } from '../services/tickets.service';
 
@@ -55,5 +69,19 @@ export class TicketsController {
   @Roles(RoleType.READ_ONLY)
   async create(@Body() createTicketDto: CreateTicketDto, @GetUser() user: User) {
     return await this.ticketsService.createTicketWithFiles(createTicketDto, user);
+  }
+
+  @Patch(':id')
+  @Roles(RoleType.READ_ONLY)
+  async update(@Param('id', ParseIntPipe) id: number, @Body() updateTicketDto: UpdateTicketDto) {
+    const ticket = await this.ticketsService.findOneById(id);
+    return await this.ticketsService.update(ticket, updateTicketDto);
+  }
+
+  @Delete(':id')
+  @Roles(RoleType.READ_ONLY)
+  @HttpCode(204)
+  async archive(@Param('id', ParseIntPipe) id: number) {
+    await this.ticketsService.archive(id);
   }
 }

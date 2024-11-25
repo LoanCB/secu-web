@@ -6,6 +6,7 @@ import { EntityFilteredListResults } from 'src/common/types/filter-repository.ty
 import { User } from 'src/users/entities/users.entity';
 import { Repository } from 'typeorm';
 import { CreateTicketDto } from '../dto/create-ticket.dto';
+import { UpdateTicketDto } from '../dto/update-ticket.dto';
 import { Ticket } from '../entities/tickets.entity';
 
 @Injectable()
@@ -17,7 +18,7 @@ export class TicketsService {
     const [tickets, totalResults] = await getEntityFilteredList({
       repository: this.ticketsRepository,
       queryFilter: query,
-      relations: [{ relation: 'file', alias: 'f' }],
+      relations: [{ relation: 'files', alias: 'f' }],
     });
     return [tickets, tickets.length, totalResults];
   }
@@ -39,5 +40,13 @@ export class TicketsService {
     // TODO save files
     console.log(files);
     return await this.ticketsRepository.save(ticket);
+  }
+
+  async update(ticket: Ticket, updateTicketDto: UpdateTicketDto): Promise<Ticket> {
+    return await this.ticketsRepository.save({ ...ticket, ...updateTicketDto });
+  }
+
+  async archive(id: number) {
+    return await this.ticketsRepository.softDelete({ id });
   }
 }

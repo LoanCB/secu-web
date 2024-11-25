@@ -1,0 +1,21 @@
+meta {
+  name: update ticket
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{base_url}}/tickets/{{id}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Test d'édition !"
+  }
+}
+
+vars:pre-request {
+  id: 2
+}

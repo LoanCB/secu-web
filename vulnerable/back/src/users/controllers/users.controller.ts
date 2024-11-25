@@ -1,6 +1,3 @@
-import { CreateUserDto } from '../dto/create-user.dto';
-import { RolesGuard } from '../guards/roles.guard';
-import { UsersService } from './../services/users.service';
 import {
   Body,
   Controller,
@@ -11,14 +8,24 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  UseGuards,
-  Request,
   Query,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Request as ExpressRequest } from 'express';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CommonSwaggerResponse } from 'src/common/helpers/common-swagger-config.helper';
-import { RoleType } from '../types/role-type';
+import { CustomHttpException } from 'src/common/helpers/custom.exception';
+import { ErrorCodesService } from 'src/common/services/error-codes.service';
+import { PaginatedList } from 'src/common/types/pagination-params.types';
 import { Roles } from '../decorators/roles.decorator';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { PatchUserDto } from '../dto/patch-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { UsersListDto } from '../dto/users-list.dto';
+import { User } from '../entities/users.entity';
+import { RolesGuard } from '../guards/roles.guard';
 import {
   SwaggerUserCreate,
   SwaggerUserFindAll,
@@ -26,15 +33,8 @@ import {
   SwaggerUserPatch,
   SwaggerUserUpdate,
 } from '../helpers/user-set-decorators.helper';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { User } from '../entities/users.entity';
-import { UpdateUserDto } from '../dto/update-user.dto';
-import { PatchUserDto } from '../dto/patch-user.dto';
-import { CustomHttpException } from 'src/common/helpers/custom.exception';
-import { Request as ExpressRequest } from 'express';
-import { ErrorCodesService } from 'src/common/services/error-codes.service';
-import { PaginatedList } from 'src/common/types/pagination-params.types';
-import { UsersListDto } from '../dto/users-list.dto';
+import { RoleType } from '../types/role-type';
+import { UsersService } from './../services/users.service';
 
 @Controller({
   path: 'users',

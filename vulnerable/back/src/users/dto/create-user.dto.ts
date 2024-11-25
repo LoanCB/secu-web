@@ -1,8 +1,8 @@
-import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsString, IsStrongPassword } from 'class-validator';
-import { RoleType } from '../types/role-type';
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { Role } from '../entities/roles.entity';
+import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsString, IsStrongPassword } from 'class-validator';
 import { Match } from 'src/common/decorators/match-fields.decorator';
+import { Role } from '../entities/roles.entity';
+import { RoleType } from '../types/role-type';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'John' })

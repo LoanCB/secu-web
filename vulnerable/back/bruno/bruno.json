@@ -1,9 +1,6 @@
 {
   "version": "1",
-  "name": "Kiwi",
+  "name": "Secu-web vulnerable",
   "type": "collection",
-  "ignore": [
-    "node_modules",
-    ".git"
-  ]
+  "ignore": ["node_modules", ".git"]
 }

@@ -1,0 +1,18 @@
+meta {
+  name: create ticket
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/tickets
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Test de création sans fichier",
+    "description": "Ceci est un exemple de description de ticket pour sa création sans fichier par défaut."
+  }
+}

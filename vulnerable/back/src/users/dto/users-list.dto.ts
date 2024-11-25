@@ -1,6 +1,6 @@
 import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
-import { PaginationParamsDto } from 'src/common/dto/pagination-params.dto';
 import { IsEnum, IsOptional } from 'class-validator';
+import { PaginationParamsDto } from 'src/common/dto/pagination-params.dto';
 
 enum UsersSortableField {
   ID = 'id',

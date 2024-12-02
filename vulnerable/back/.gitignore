@@ -37,6 +37,5 @@ lerna-debug.log*
 # ENV
 .env
 
-# BRUNO
-bruno/Kiwi/environments/*.bru
+# FILES
 uploads

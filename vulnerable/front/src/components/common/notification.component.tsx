@@ -1,19 +1,8 @@
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { closeSnackBar } from "../../store/notification-slice";
-import { RootState } from "../../store/store";
-
-const getColor = (severity: "error" | "success" | "warning" | "info") => {
-  switch (severity) {
-    case "error":
-      return "#ef5350";
-    case "info":
-      return "#03a9f4";
-    case "success":
-      return "#4caf50";
-    case "warning":
-      return "#ff9800";
-  }
-};
+import { Alert, Snackbar } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "@src/store/hooks";
+import { closeSnackBar } from "@src/store/notification-slice";
+import { RootState } from "@src/store/store";
+import { SyntheticEvent } from "react";
 
 const Notification = () => {
   const dispatch = useAppDispatch();
@@ -23,10 +12,7 @@ const Notification = () => {
   );
   const { isActiveSnackBar, message, severity } = notificationState;
 
-  const handleClose = (
-    _event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
+  const handleClose = (_event?: SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return;
     }
@@ -38,30 +24,18 @@ const Notification = () => {
   }
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "10px",
-        right: "10px",
-        display: isActiveSnackBar ? "block" : "none",
-        backgroundColor: getColor(severity),
-        padding: "10px",
-      }}
-    >
-      {message}
-      <button
-        style={{
-          color: "white",
-          border: "solid 1px white",
-          borderRadius: "5px",
-          padding: "5px",
-          marginLeft: "5px",
-        }}
-        onClick={handleClose}
+    <>
+      <Snackbar
+        open={isActiveSnackBar}
+        onClose={handleClose}
+        TransitionProps={{ enter: true, exit: true }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        Fermer
-      </button>
-    </div>
+        <Alert severity={severity} onClose={handleClose} variant="filled">
+          {message}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

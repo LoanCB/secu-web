@@ -1,58 +1,175 @@
-import { useEffect } from "react";
-import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
+import MenuIcon from "@mui/icons-material/Menu";
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import Logo from "@src/assets/logo.png";
+import { useAppDispatch, useAppSelector } from "@src/store/hooks";
+import { RootState } from "@src/store/store";
+import { removeUser } from "@src/store/user-slice";
+import { User } from "@src/types/user/user";
+import { MouseEvent, useState } from "react";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import Notification from "./components/common/notification.component";
-import { setNavigate } from "./navigation";
-import { useAppSelector } from "./store/hooks";
-import { RootState } from "./store/store";
-import "./style/reset-style.css";
 
-function App() {
-  const childStyle = {
-    display: "flex",
-    gap: 10,
-    padding: "10px 0",
+const SecureLayout = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const user: User | null = useAppSelector((state: RootState) => state.user);
+
+  const handleLogout = () => {
+    dispatch(removeUser());
+    navigate("/login");
+  };
+  const pages = [
+    {
+      text: "Liste des tickets",
+      handleClick: () => navigate("/tickets"),
+    },
+    {
+      text: "liste des fichiers",
+      handleClick: () => navigate("/files"),
+    },
+  ];
+  const settings = [
+    {
+      text: "Se déconnecter",
+      handleClick: handleLogout,
+    },
+  ];
+
+  const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
   };
 
-  const user = useAppSelector((state: RootState) => state.user);
-  const navigate = useNavigate();
-  console.log(JSON.stringify(user));
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
 
-  useEffect(() => {
-    setNavigate(navigate);
-  }, [navigate]);
+  const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
 
-  if (!user || !user.token) {
-    return <Navigate to="/auth/login" />;
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  if (!user) {
+    return <Navigate to="/login" />;
   }
 
   return (
     <>
-      <nav style={{ display: "flex", justifyContent: "space-around" }}>
-        <ul style={childStyle}>
-          <li>
-            <Link to={""}>Mangas</Link>
-          </li>
-          <li>
-            <Link to={"categories"}>Catégories</Link>
-          </li>
-        </ul>
-        <div style={childStyle}>
-          <button>
-            <Link to={"auth/profile"}>Profil</Link>
-          </button>
-          <button>
-            <Link to={"auth/login"}>Se déconnecter</Link>
-          </button>
-        </div>
-      </nav>
+      <AppBar position="static">
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Box
+              component="img"
+              src={Logo}
+              sx={{ width: "50px", height: "auto" }}
+            />
 
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{ display: { xs: "block", md: "none" } }}
+              >
+                {pages.map((page, index) => (
+                  <MenuItem key={index} onClick={page.handleClick}>
+                    <Typography sx={{ textAlign: "center" }}>
+                      {page.text}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              {pages.map((page, index) => (
+                <Button
+                  key={index}
+                  onClick={page.handleClick}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {page.text}
+                </Button>
+              ))}
+            </Box>
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar>
+                    {user!.firstName[0].toUpperCase() +
+                      user!.lastName[0].toUpperCase()}
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting, index) => (
+                  <MenuItem key={index} onClick={setting.handleClick}>
+                    <Typography sx={{ textAlign: "center" }}>
+                      {setting.text}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
       <Notification />
-
-      <main>
-        <Outlet />
-      </main>
+      <Outlet />
     </>
   );
-}
+};
 
-export default App;
+export default SecureLayout;

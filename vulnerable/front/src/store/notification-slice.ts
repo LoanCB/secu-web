@@ -1,9 +1,10 @@
+import { AlertColor } from "@mui/material";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type NotificationState = {
   isActiveSnackBar?: boolean;
   message: string | null;
-  severity: "success" | "warning" | "error" | "info";
+  severity: AlertColor;
 };
 export const initialState: NotificationState = {
   isActiveSnackBar: false,

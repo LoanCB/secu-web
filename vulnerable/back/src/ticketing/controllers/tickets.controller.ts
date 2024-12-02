@@ -10,9 +10,13 @@ import {
   Patch,
   Post,
   Query,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { diskStorage } from 'multer';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { GetUser } from 'src/common/decorators/user.decorator';
 import { CommonSwaggerResponse } from 'src/common/helpers/common-swagger-config.helper';
@@ -67,8 +71,19 @@ export class TicketsController {
 
   @Post()
   @Roles(RoleType.READ_ONLY)
-  async create(@Body() createTicketDto: CreateTicketDto, @GetUser() user: User) {
-    return await this.ticketsService.createTicketWithFiles(createTicketDto, user);
+  @UseInterceptors(
+    FilesInterceptor('files', 10, {
+      storage: diskStorage({
+        destination: './uploads',
+      }),
+    }),
+  )
+  async create(
+    @Body() createTicketDto: CreateTicketDto,
+    @UploadedFiles() files: Express.Multer.File[],
+    @GetUser() user: User,
+  ) {
+    return await this.ticketsService.createTicketWithFiles(createTicketDto, user, files);
   }
 
   @Patch(':id')

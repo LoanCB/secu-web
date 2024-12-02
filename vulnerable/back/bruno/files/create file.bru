@@ -1,0 +1,23 @@
+meta {
+  name: create file
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/files/attachToTicket/{{ticketId}}
+  body: multipartForm
+  auth: inherit
+}
+
+headers {
+  Content-Type: multipart/form-data
+}
+
+body:multipart-form {
+  file: @file(/Users/loancb/Pictures/Image Discord.png)
+}
+
+vars:pre-request {
+  ticketId: 1
+}

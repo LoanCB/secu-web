@@ -39,3 +39,4 @@ lerna-debug.log*
 
 # BRUNO
 bruno/Kiwi/environments/*.bru
+uploads

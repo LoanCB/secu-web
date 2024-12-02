@@ -24,11 +24,16 @@ export class FilesService {
     const [files, totalResults] = await getEntityFilteredList({
       repository: this.filesRepository,
       queryFilter: query,
+      withDeleted: query.withDeleted,
     });
     return [files, files.length, totalResults];
   }
 
   async findOneById(id: number): Promise<File> {
     return await this.filesRepository.findOneOrFail({ where: { id } });
+  }
+
+  async archive(id: number) {
+    return await this.filesRepository.softDelete({ id });
   }
 }

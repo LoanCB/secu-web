@@ -6,13 +6,19 @@ meta {
 
 post {
   url: {{base_url}}/tickets
-  body: json
+  body: multipartForm
   auth: inherit
 }
 
 body:json {
   {
-    "title": "Test de création pour l'édition",
+    "title": "Test de création avec fichiers",
     "description": "Ceci est un exemple de description de ticket pour sa création sans fichier par défaut."
   }
+}
+
+body:multipart-form {
+  title: Test de création avec fichiers
+  description: pouet
+  files: @file()
 }

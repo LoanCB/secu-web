@@ -40,10 +40,10 @@ export class TicketsService {
     user: User,
     files: Express.Multer.File[] = [],
   ): Promise<Ticket> {
-    const ticket = this.ticketsRepository.create({ ...createTicketDto, user });
+    const ticket = await this.ticketsRepository.save({ ...createTicketDto, user });
     files.forEach(async (file) => {
       const fileDto: CreateFileDto = {
-        fileName: file.filename,
+        fileName: file.originalname,
         path: file.path,
         size: file.size,
         ticketId: ticket.id,
@@ -51,7 +51,7 @@ export class TicketsService {
       await this.filesService.create(fileDto);
     });
 
-    return await this.ticketsRepository.save(ticket);
+    return ticket;
   }
 
   async update(ticket: Ticket, updateTicketDto: UpdateTicketDto): Promise<Ticket> {

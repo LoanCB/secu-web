@@ -1,5 +1,5 @@
 import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional } from 'class-validator';
 import { PaginationParamsDto } from 'src/common/dto/pagination-params.dto';
 
 enum FilesSortableField {
@@ -22,4 +22,9 @@ export class FilesListDto extends OmitType(PaginationParamsDto, ['sortField']) {
   })
   @IsOptional()
   sortField: FilesSortableField = FilesSortableField.CREATED_DATE_FIELD;
+
+  @ApiPropertyOptional({ description: 'Get with archived files', default: true })
+  @IsBoolean()
+  @IsOptional()
+  withDeleted?: boolean = true;
 }

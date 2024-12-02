@@ -1,0 +1,15 @@
+meta {
+  name: delete
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{base_url}}/files/{{id}}/delete
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  id: 1
+}

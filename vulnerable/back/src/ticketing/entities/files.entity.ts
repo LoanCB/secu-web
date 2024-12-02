@@ -1,5 +1,5 @@
 import { SoftDeleteEntity } from 'src/common/entities/soft-delete.entity';
-import { Column, Entity, ManyToOne, Relation } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, Relation } from 'typeorm';
 import { Ticket } from './tickets.entity';
 
 @Entity()
@@ -14,5 +14,9 @@ export class File extends SoftDeleteEntity {
   size: number;
 
   @ManyToOne(() => Ticket, (ticket) => ticket.files)
+  @JoinColumn({ name: 'ticketId' })
   ticket: Relation<Ticket>;
+
+  @Column({ nullable: true })
+  ticketId: number;
 }

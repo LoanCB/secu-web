@@ -8,11 +8,15 @@ import { Repository } from 'typeorm';
 import { CreateTicketDto } from '../dto/create-ticket.dto';
 import { UpdateTicketDto } from '../dto/update-ticket.dto';
 import { Ticket } from '../entities/tickets.entity';
+import { CreateFileDto } from './../dto/create-file.dto';
+import { FilesService } from './files.service';
 
 @Injectable()
 export class TicketsService {
   @InjectRepository(Ticket)
   ticketsRepository: Repository<Ticket>;
+
+  constructor(private readonly filesService: FilesService) {}
 
   async findAll(query: PaginationParamsDto): EntityFilteredListResults<Ticket> {
     const [tickets, totalResults] = await getEntityFilteredList({
@@ -37,8 +41,16 @@ export class TicketsService {
     files: Express.Multer.File[] = [],
   ): Promise<Ticket> {
     const ticket = this.ticketsRepository.create({ ...createTicketDto, user });
-    // TODO save files
-    console.log(files);
+    files.forEach(async (file) => {
+      const fileDto: CreateFileDto = {
+        fileName: file.filename,
+        path: file.path,
+        size: file.size,
+        ticketId: ticket.id,
+      };
+      await this.filesService.create(fileDto);
+    });
+
     return await this.ticketsRepository.save(ticket);
   }
 

@@ -20,6 +20,7 @@ import { User } from "@src/types/user/user";
 import { MouseEvent, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import Notification from "./components/common/notification.component";
+import { RoleType } from "./types/user/role";
 
 const SecureLayout = () => {
   const navigate = useNavigate();
@@ -42,6 +43,11 @@ const SecureLayout = () => {
     {
       text: "liste des fichiers",
       handleClick: () => navigate("/files"),
+    },
+    {
+      text: "Liste des utilisateurs",
+      handleClick: () => navigate("/users"),
+      isAdmin: true,
     },
   ];
   const settings = [
@@ -110,7 +116,17 @@ const SecureLayout = () => {
                 sx={{ display: { xs: "block", md: "none" } }}
               >
                 {pages.map((page, index) => (
-                  <MenuItem key={index} onClick={page.handleClick}>
+                  <MenuItem
+                    key={index}
+                    onClick={page.handleClick}
+                    sx={{
+                      display: page.isAdmin
+                        ? user.role.title === RoleType.ADMINISTRATOR
+                          ? "initial"
+                          : "none"
+                        : "initial",
+                    }}
+                  >
                     <Typography sx={{ textAlign: "center" }}>
                       {page.text}
                     </Typography>

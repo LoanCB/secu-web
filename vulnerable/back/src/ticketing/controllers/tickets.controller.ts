@@ -48,6 +48,12 @@ export class TicketsController {
     private readonly errorCodesService: ErrorCodesService,
   ) {}
 
+  @Get('count')
+  @Roles(RoleType.READ_ONLY)
+  async counters(@GetUser() user: User) {
+    return this.ticketsService.countTicketAndFileByUser(user.id);
+  }
+
   @Get()
   @Roles(RoleType.READ_ONLY)
   async findAll(@Query() query: UsersListDto): Promise<PaginatedList<Ticket>> {

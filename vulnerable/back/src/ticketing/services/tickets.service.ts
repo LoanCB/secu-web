@@ -61,4 +61,19 @@ export class TicketsService {
   async archive(id: number) {
     return await this.ticketsRepository.softDelete({ id });
   }
+
+  async countTicketAndFileByUser(userId: number) {
+    const results = await this.ticketsRepository
+      .createQueryBuilder('ticket')
+      .leftJoin('ticket.files', 'file')
+      .where('ticket.userId = :userId', { userId })
+      .select('COUNT(DISTINCT ticket.id)', 'ticketCount')
+      .addSelect('COUNT(file.id)', 'fileCount')
+      .getRawOne();
+
+    return {
+      ticketCount: parseInt(results.ticketCount, 10),
+      fileCount: parseInt(results.fileCount, 10),
+    };
+  }
 }

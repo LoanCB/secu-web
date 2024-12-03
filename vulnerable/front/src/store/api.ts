@@ -48,6 +48,6 @@ const baseQueryWithCatchErrors: typeof baseQuery = async (
 
 export const api = createApi({
   baseQuery: baseQueryWithCatchErrors,
-  tagTypes: ["tickets", "files"],
+  tagTypes: ["tickets", "files", "users"],
   endpoints: () => ({}),
 });

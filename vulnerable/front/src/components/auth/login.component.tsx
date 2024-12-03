@@ -6,7 +6,7 @@ import {
 } from "../../store/auth-api";
 import { useAppDispatch } from "../../store/hooks";
 import { openSnackBar } from "../../store/notification-slice";
-import { setUser } from "../../store/user-slice";
+import { removeUser, setUser } from "../../store/user-slice";
 import Notification from "../common/notification.component";
 
 const Login = () => {
@@ -28,6 +28,7 @@ const Login = () => {
     }
 
     if (profileError) {
+      alert(JSON.stringify(profileError));
       dispatch(
         openSnackBar({
           message: "Impossible de récupérer le profile de l'utilisateur",
@@ -52,6 +53,7 @@ const Login = () => {
         })
       );
     } else if (loginData) {
+      dispatch(removeUser());
       setToken(loginData.access_token);
       trigger(loginData.access_token);
     }

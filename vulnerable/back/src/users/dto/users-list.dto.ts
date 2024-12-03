@@ -1,5 +1,5 @@
 import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional } from 'class-validator';
 import { PaginationParamsDto } from 'src/common/dto/pagination-params.dto';
 
 enum UsersSortableField {
@@ -24,4 +24,9 @@ export class UsersListDto extends OmitType(PaginationParamsDto, ['sortField']) {
   })
   @IsOptional()
   sortField: UsersSortableField = UsersSortableField.CREATED_DATE_FIELD;
+
+  @ApiPropertyOptional({ description: 'get users list with archived users' })
+  @IsBoolean()
+  @IsOptional()
+  withArchived?: boolean;
 }

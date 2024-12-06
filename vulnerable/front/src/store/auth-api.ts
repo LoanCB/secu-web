@@ -1,3 +1,4 @@
+import { UserFormData } from "@src/components/base/users-list";
 import { PaginatedList } from "@src/types/base/listing";
 import { ArchiveUserDto, UserPaginationParams } from "@src/types/user/list";
 import { LoggedUser, UserDto } from "../types/user/user";
@@ -22,6 +23,22 @@ export const authApi = api.injectEndpoints({
       query: () => "users",
       providesTags: ["users"],
     }),
+    createUser: builder.mutation<void, UserFormData>({
+      query: (body) => ({
+        url: "/users",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["users"],
+    }),
+    updateUser: builder.mutation<void, UserFormData>({
+      query: ({ id, ...body }) => ({
+        url: `users/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["users"],
+    }),
     archiveUser: builder.mutation<void, ArchiveUserDto>({
       query: ({ id, isActive }) => ({
         url: `users/${id}/archive`,
@@ -37,5 +54,7 @@ export const {
   useLoginUserMutation,
   useLazyGetProfileQuery,
   useUsersListQuery,
+  useCreateUserMutation,
+  useUpdateUserMutation,
   useArchiveUserMutation,
 } = authApi;

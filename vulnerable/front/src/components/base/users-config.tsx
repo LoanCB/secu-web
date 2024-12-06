@@ -11,9 +11,11 @@ import { LoggedUser, User } from "@src/types/user/user";
 const useUsersColumns = ({
   handleArchiveUser,
   user,
+  handleOpenEditModal,
 }: {
   handleArchiveUser: ({ id, isActive }: ArchiveUserDto) => Promise<void>;
   user: User;
+  handleOpenEditModal: (data: LoggedUser) => void;
 }): GridColDef<LoggedUser>[] => [
   {
     field: "id",
@@ -56,7 +58,10 @@ const useUsersColumns = ({
     renderCell: (params) => {
       return [
         <Tooltip key="editUser" title="Éditer">
-          <IconButton color="primary">
+          <IconButton
+            color="primary"
+            onClick={() => handleOpenEditModal(params.row)}
+          >
             <EditIcon />
           </IconButton>
         </Tooltip>,

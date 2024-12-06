@@ -1,4 +1,6 @@
+import { BasePaginationParams, PaginatedList } from "@src/types/base/listing";
 import { Counter } from "@src/types/ticketing/counter";
+import { Ticket } from "@src/types/ticketing/ticket";
 import { api } from "./api";
 
 export const ticketingApi = api.injectEndpoints({
@@ -7,7 +9,11 @@ export const ticketingApi = api.injectEndpoints({
       query: () => "tickets/count",
       providesTags: ["tickets", "files"],
     }),
+    getTickets: builder.query<PaginatedList<Ticket>, BasePaginationParams>({
+      query: () => "tickets",
+      providesTags: ["tickets"],
+    }),
   }),
 });
 
-export const { useGetCountersQuery } = ticketingApi;
+export const { useGetCountersQuery, useGetTicketsQuery } = ticketingApi;

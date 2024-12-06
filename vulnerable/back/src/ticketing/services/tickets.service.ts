@@ -22,7 +22,10 @@ export class TicketsService {
     const [tickets, totalResults] = await getEntityFilteredList({
       repository: this.ticketsRepository,
       queryFilter: query,
-      relations: [{ relation: 'files', alias: 'f' }],
+      relations: [
+        { relation: 'files', alias: 'f' },
+        { relation: 'user', alias: 'u' },
+      ],
     });
     return [tickets, tickets.length, totalResults];
   }

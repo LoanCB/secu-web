@@ -14,7 +14,7 @@ export const ticketingApi = api.injectEndpoints({
       query: () => "tickets",
       providesTags: ["tickets"],
     }),
-    getTicketDetails: builder.query<Ticket, number>({
+    getTicketDetails: builder.query<Ticket[], number>({
       query: (id) => `tickets/${id}`,
     }),
     createTicket: builder.mutation<Ticket, TicketFormData>({

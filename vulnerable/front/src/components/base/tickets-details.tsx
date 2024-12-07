@@ -25,7 +25,7 @@ const TicketDetails = () => {
           "&quot;": '"',
           "&#39;": "'",
         };
-        const description = data.description.replace(
+        const description = data[0].description.replace(
           /&[^;]+;/g,
           (entity) => entities[entity] || entity
         );
@@ -60,7 +60,7 @@ const TicketDetails = () => {
     return (
       <Box>
         <Typography variant="h4" align="center" my={2}>
-          {data.title}
+          {data[0].title}
           <Button variant="contained" color="secondary" sx={{ ml: 2 }}>
             <Link to="/tickets">Retour à la liste</Link>
           </Button>
@@ -68,7 +68,7 @@ const TicketDetails = () => {
         <Box
           id="BoxDescription"
           sx={{ mt: 3 }}
-          dangerouslySetInnerHTML={{ __html: data.description }}
+          dangerouslySetInnerHTML={{ __html: data[0].description }}
         />
       </Box>
     );

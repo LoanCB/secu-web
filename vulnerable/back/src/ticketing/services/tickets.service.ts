@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationParamsDto } from 'src/common/dto/pagination-params.dto';
-import { getEntityFilteredList } from 'src/common/helpers/filter-repository.helper';
-import { EntityFilteredListResults } from 'src/common/types/filter-repository.types';
 import { User } from 'src/users/entities/users.entity';
+import { RoleType } from 'src/users/types/role-type';
 import { Repository } from 'typeorm';
 import { CreateTicketDto } from '../dto/create-ticket.dto';
 import { UpdateTicketDto } from '../dto/update-ticket.dto';
@@ -18,24 +17,21 @@ export class TicketsService {
 
   constructor(private readonly filesService: FilesService) {}
 
-  async findAll(query: PaginationParamsDto): EntityFilteredListResults<Ticket> {
-    const [tickets, totalResults] = await getEntityFilteredList({
-      repository: this.ticketsRepository,
-      queryFilter: query,
-      relations: [
-        { relation: 'files', alias: 'f' },
-        { relation: 'user', alias: 'u' },
-      ],
-    });
-    return [tickets, tickets.length, totalResults];
+  async findAll(query: PaginationParamsDto, user: User) {
+    const rawQuery = this.ticketsRepository.createQueryBuilder('ticket').innerJoinAndSelect('ticket.user', 'user');
+    if (user.role.name !== RoleType.ADMINISTRATOR) {
+      rawQuery.where(`user.id = ${user.id}`);
+    }
+    const [results, totalResults] = await rawQuery.getManyAndCount();
+    return { totalResults, results };
   }
 
-  async findOneById(id: number, withDeleted: boolean = true) {
-    return await this.ticketsRepository.findOneOrFail({
-      where: { id },
-      relations: { files: true },
-      withDeleted,
-    });
+  async findOneById(id: string) {
+    return await this.ticketsRepository
+      .createQueryBuilder('ticket')
+      .innerJoinAndSelect('ticket.user', 'user')
+      .where(`ticket.id = ${id}`)
+      .getMany();
   }
 
   async createTicketWithFiles(

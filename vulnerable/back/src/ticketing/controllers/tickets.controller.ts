@@ -7,7 +7,6 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
   Query,
   UploadedFiles,
@@ -22,15 +21,12 @@ import { GetUser } from 'src/common/decorators/user.decorator';
 import { CommonSwaggerResponse } from 'src/common/helpers/common-swagger-config.helper';
 import { CustomHttpException } from 'src/common/helpers/custom.exception';
 import { ErrorCodesService } from 'src/common/services/error-codes.service';
-import { PaginatedList } from 'src/common/types/pagination-params.types';
 import { Roles } from 'src/users/decorators/roles.decorator';
 import { User } from 'src/users/entities/users.entity';
 import { RolesGuard } from 'src/users/guards/roles.guard';
 import { RoleType } from 'src/users/types/role-type';
 import { CreateTicketDto } from '../dto/create-ticket.dto';
 import { UsersListDto } from '../dto/tickets-list.dto';
-import { UpdateTicketDto } from '../dto/update-ticket.dto';
-import { Ticket } from '../entities/tickets.entity';
 import { TicketsService } from '../services/tickets.service';
 
 @Controller({
@@ -56,14 +52,13 @@ export class TicketsController {
 
   @Get()
   @Roles(RoleType.READ_ONLY)
-  async findAll(@Query() query: UsersListDto): Promise<PaginatedList<Ticket>> {
-    const [tickets, currentResults, totalResults] = await this.ticketsService.findAll(query);
-    return { ...query, totalResults, currentResults, results: tickets };
+  async findAll(@Query() query: UsersListDto, @GetUser() user: User) {
+    return await this.ticketsService.findAll(query, user);
   }
 
   @Get(':id')
   @Roles(RoleType.READ_ONLY)
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  async findOne(@Param('id') id: string) {
     try {
       return await this.ticketsService.findOneById(id);
     } catch (error) {
@@ -93,12 +88,12 @@ export class TicketsController {
     return await this.ticketsService.createTicketWithFiles(createTicketDto, user, files);
   }
 
-  @Patch(':id')
-  @Roles(RoleType.READ_ONLY)
-  async update(@Param('id', ParseIntPipe) id: number, @Body() updateTicketDto: UpdateTicketDto) {
-    const ticket = await this.ticketsService.findOneById(id);
-    return await this.ticketsService.update(ticket, updateTicketDto);
-  }
+  // @Patch(':id')
+  // @Roles(RoleType.READ_ONLY)
+  // async update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
+  //   const ticket = await this.ticketsService.findOneById(id);
+  //   return await this.ticketsService.update(ticket, updateTicketDto);
+  // }
 
   @Delete(':id')
   @Roles(RoleType.READ_ONLY)

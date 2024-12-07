@@ -1,3 +1,5 @@
+import { Box, Button, TextField, Typography } from "@mui/material";
+import BackgroundImage from "@src/assets/background.jpg";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -60,23 +62,59 @@ const Login = () => {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        backgroundImage: `url(${BackgroundImage})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Notification />
-      <h1>Login</h1>
-      <form onSubmit={(event) => handleSubmit(event)}>
-        <input
-          type="email"
-          placeholder="Email"
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          onChange={(event) => setPassword(event.target.value)}
-        />
-        <button type="submit">Se connecter</button>
-      </form>
-    </>
+      <Box
+        sx={{
+          backgroundColor: "white",
+          p: 3,
+          borderRadius: 3,
+        }}
+      >
+        <Typography align="center" variant="h5" mb={2}>
+          Login
+        </Typography>
+        <form
+          onSubmit={(event) => handleSubmit(event)}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 10,
+            minWidth: 400,
+          }}
+        >
+          <TextField
+            label="Email"
+            type="email"
+            required
+            fullWidth
+            onChange={(event) => setEmail(event.target.value)}
+          />
+          <TextField
+            label="Mot de passe"
+            type="password"
+            required
+            fullWidth
+            onChange={(event) => setPassword(event.target.value)}
+          />
+          <Button type="submit" variant="contained">
+            Se connecter
+          </Button>
+        </form>
+      </Box>
+    </Box>
   );
 };
 

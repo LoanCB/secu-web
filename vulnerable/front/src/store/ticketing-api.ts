@@ -1,3 +1,4 @@
+import { TicketFormData } from "@src/components/base/ticket-create";
 import { BasePaginationParams, PaginatedList } from "@src/types/base/listing";
 import { Counter } from "@src/types/ticketing/counter";
 import { Ticket } from "@src/types/ticketing/ticket";
@@ -16,6 +17,14 @@ export const ticketingApi = api.injectEndpoints({
     getTicketDetails: builder.query<Ticket, number>({
       query: (id) => `tickets/${id}`,
     }),
+    createTicket: builder.mutation<Ticket, TicketFormData>({
+      query: (body) => ({
+        url: "tickets",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["tickets"],
+    }),
   }),
 });
 
@@ -23,4 +32,5 @@ export const {
   useGetCountersQuery,
   useGetTicketsQuery,
   useGetTicketDetailsQuery,
+  useCreateTicketMutation,
 } = ticketingApi;

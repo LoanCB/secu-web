@@ -3,12 +3,11 @@ import { useGetTicketsQuery } from "@src/store/ticketing-api";
 import { ListGridProps, SortOrder } from "@src/types/base/listing";
 import { TicketsSortableField } from "@src/types/ticketing/list";
 import { Ticket } from "@src/types/ticketing/ticket";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import ListGridComponent from "../common/list-grid.component";
 import useTicketsColumns from "./tickets-config";
 
 const TicketsList = () => {
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Pagination
@@ -36,7 +35,7 @@ const TicketsList = () => {
   });
 
   const listProps: ListGridProps<Ticket> = {
-    columns: [...useTicketsColumns({ navigate })],
+    columns: [...useTicketsColumns()],
     rows: data ? data.results : [],
     loading: isLoading,
     defaultSort: {

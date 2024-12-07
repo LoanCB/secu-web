@@ -13,7 +13,14 @@ export const ticketingApi = api.injectEndpoints({
       query: () => "tickets",
       providesTags: ["tickets"],
     }),
+    getTicketDetails: builder.query<Ticket, number>({
+      query: (id) => `tickets/${id}`,
+    }),
   }),
 });
 
-export const { useGetCountersQuery, useGetTicketsQuery } = ticketingApi;
+export const {
+  useGetCountersQuery,
+  useGetTicketsQuery,
+  useGetTicketDetailsQuery,
+} = ticketingApi;

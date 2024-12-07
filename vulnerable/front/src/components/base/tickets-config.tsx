@@ -2,13 +2,9 @@ import { Button } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { Ticket } from "@src/types/ticketing/ticket";
 import { User } from "@src/types/user/user";
-import { NavigateFunction } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const useTicketsColumns = ({
-  navigate,
-}: {
-  navigate: NavigateFunction;
-}): GridColDef<Ticket>[] => [
+const useTicketsColumns = (): GridColDef<Ticket>[] => [
   {
     field: "id",
     flex: 0.5,
@@ -33,8 +29,8 @@ const useTicketsColumns = ({
     headerAlign: "center",
     align: "center",
     renderCell: (params) => [
-      <Button onClick={() => navigate(`tickets/${params.row.id}`)}>
-        Voir le détail
+      <Button>
+        <Link to={`/tickets/${params.row.id}`}>Voir le détail</Link>
       </Button>,
     ],
   },

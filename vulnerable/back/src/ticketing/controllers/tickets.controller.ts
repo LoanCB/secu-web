@@ -89,6 +89,7 @@ export class TicketsController {
     @UploadedFiles() files: Express.Multer.File[],
     @GetUser() user: User,
   ) {
+    console.log(JSON.stringify(createTicketDto));
     return await this.ticketsService.createTicketWithFiles(createTicketDto, user, files);
   }
 

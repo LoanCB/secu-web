@@ -33,6 +33,8 @@ const CustomRichTextEditor = forwardRef(
     return (
       <RichTextEditor
         extensions={[StarterKit]}
+        enableInputRules={false}
+        enablePasteRules={false}
         ref={editorRef}
         content={value}
         onUpdate={({ editor }) => onChange(editor.getHTML())}

@@ -4,6 +4,7 @@ import Login from "./components/auth/login.component";
 import UserProfile from "./components/auth/user-profile.component";
 import Dashboard from "./components/base/dashboard";
 import FilesList from "./components/base/files-list";
+import TicketCreate from "./components/base/ticket-create";
 import TicketDetails from "./components/base/tickets-details";
 import TicketsList from "./components/base/tickets-list";
 import UsersList from "./components/base/users-list";
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "/tickets/:id",
         element: <TicketDetails />,
+      },
+      {
+        path: "/tickets/create",
+        element: <TicketCreate />,
       },
       {
         path: "/files",

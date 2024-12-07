@@ -28,9 +28,9 @@ const TicketDetails = () => {
   if (data) {
     return (
       <Box>
-        <Typography>
+        <Typography variant="h4" align="center" my={2}>
           {data.title}
-          <Button>
+          <Button variant="contained" color="secondary" sx={{ ml: 2 }}>
             <Link to="/tickets">Retour à la liste</Link>
           </Button>
         </Typography>

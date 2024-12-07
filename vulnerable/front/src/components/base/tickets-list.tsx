@@ -1,9 +1,15 @@
-import { Alert, Box, CircularProgress, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
 import { useGetTicketsQuery } from "@src/store/ticketing-api";
 import { ListGridProps, SortOrder } from "@src/types/base/listing";
 import { TicketsSortableField } from "@src/types/ticketing/list";
 import { Ticket } from "@src/types/ticketing/ticket";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import ListGridComponent from "../common/list-grid.component";
 import useTicketsColumns from "./tickets-config";
 
@@ -67,7 +73,14 @@ const TicketsList = () => {
   if (data) {
     return (
       <Box>
-        <Typography>Liste des tickets</Typography>
+        <Typography variant="h4" align="center" my={2}>
+          Liste des tickets
+          <Link to={"/tickets/create"}>
+            <Button variant="contained" color="secondary" sx={{ ml: 2 }}>
+              Créer un ticket
+            </Button>
+          </Link>
+        </Typography>
         <ListGridComponent {...listProps} />
       </Box>
     );

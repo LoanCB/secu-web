@@ -231,9 +231,14 @@ const UsersList = () => {
   if (data) {
     return (
       <Box>
-        <Typography>
+        <Typography variant="h4" align="center" my={2}>
           Liste des utilisateurs
-          <Button onClick={() => setOpenModal(true)}>
+          <Button
+            variant="contained"
+            color="secondary"
+            sx={{ ml: 2 }}
+            onClick={() => setOpenModal(true)}
+          >
             Créer un utilisateur
           </Button>
         </Typography>

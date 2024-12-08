@@ -10,7 +10,9 @@ docker compose up -d
 
 front : [http://localhost:3113](http://localhost:3113)
 
-back : [http://localhost:3114/api-docs](http://localhost:3114/api-docs)
+back Swagger : [http://localhost:3114/api-docs](http://localhost:3114/api-docs)
+
+back Endpoints : [http://localhost:3114/api/v1](http://localhost:3114/api/v1)
 
 phpMyAdmin : [http://localhost:3112](http://localhost:3112)
 
@@ -32,3 +34,9 @@ PhpMyAdmin :
 
 - username : `root`
 - password : `password`
+
+## API via Bruno
+
+Pour récupérer la collection de Bruno, il vous suffit de l'importer. Pour se connecter, allez dans `auth/login` et lancer la requête. Cela va automatiquement récupérer le token et le faire hériter dans l'ensemble des routes. Attention, il dispose d'une validité limitée. Si vous tombez sur une erreur 401, relancer la requête pour récupérer un nouveau token.
+
+Pour télécharger Bruno : [https://www.usebruno.com/](https://www.usebruno.com/)

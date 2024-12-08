@@ -1,0 +1,65 @@
+services:
+  db:
+    image: mysql:8
+    container_name: ticketing_secure_db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ticketing
+      MYSQL_INITDB_SKIP_TZINFO: 1
+      CHARACTER_SET_SERVER: utf8mb4
+      COLLATION_SERVER: utf8mb4_general_ci
+    ports:
+      - "3119:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./back/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  back:
+    image: node:22
+    container_name: ticketing_secure_back
+    working_dir: /app
+    volumes:
+      - ./back:/app
+      - back_node_modules:/app/node_modules
+    ports:
+      - "3118:3118"
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=ticketing
+    command: sh -c "npm install && npm run start:dev"
+    depends_on:
+      - db
+    restart: on-failure
+
+  front:
+    image: node:22
+    container_name: ticketing_secure_front
+    working_dir: /app
+    environment:
+      - PORT=3117
+    volumes:
+      - ./front:/app
+      - front_node_modules:/app/node_modules
+    ports:
+      - "3117:3117"
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      - db
+
+  phpmysql:
+    image: phpmyadmin
+    container_name: ticketing_secure_phpmyadmin
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3116:80"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+  back_node_modules:
+  front_node_modules:

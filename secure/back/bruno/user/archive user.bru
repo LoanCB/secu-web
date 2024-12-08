@@ -1,0 +1,21 @@
+meta {
+  name: archive user
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{base_url}}/users/{{id}}/archive
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "isActive": false
+  }
+}
+
+vars:pre-request {
+  id: 2
+}

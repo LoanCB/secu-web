@@ -1,0 +1,9 @@
+entity: User
+items:
+  user_1:
+    firstName: Admin
+    lastName: Admin
+    email: admin@admin.com
+    password: '$2b$10$vgxYOypyB0lvAJUw6iQFMOr9SxfsT2mU3wDp0GkEdsJhHSOv/5FFu'
+    role: '@role_1'
+    isActive: true

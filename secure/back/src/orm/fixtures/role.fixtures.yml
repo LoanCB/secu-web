@@ -1,0 +1,10 @@
+entity: Role
+items:
+  role_1:
+    title: Administrateur
+    name: 'ADMINISTRATOR'
+    description: Administrateur du service.
+  role_2:
+    title: Lecture uniquement
+    name: 'READ_ONLY'
+    description: Rôle dédié uniquement à la consultation de ressources

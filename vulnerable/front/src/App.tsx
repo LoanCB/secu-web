@@ -33,7 +33,7 @@ const SecureLayout = () => {
 
   const handleLogout = () => {
     dispatch(removeUser());
-    navigate("/login");
+    navigate("/auth/login");
   };
   const pages = [
     {
@@ -73,8 +73,8 @@ const SecureLayout = () => {
     setAnchorElUser(null);
   };
 
-  if (!user) {
-    return <Navigate to="/login" />;
+  if (!user || !user.token) {
+    return <Navigate to="/auth/login" />;
   }
 
   return (
@@ -121,7 +121,7 @@ const SecureLayout = () => {
                     onClick={page.handleClick}
                     sx={{
                       display: page.isAdmin
-                        ? user.role.title === RoleType.ADMINISTRATOR
+                        ? user.role.name === RoleType.ADMINISTRATOR
                           ? "initial"
                           : "none"
                         : "initial",
@@ -139,7 +139,15 @@ const SecureLayout = () => {
                 <Button
                   key={index}
                   onClick={page.handleClick}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: page.isAdmin
+                      ? user.role.name === RoleType.ADMINISTRATOR
+                        ? "block"
+                        : "none"
+                      : "block",
+                  }}
                 >
                   {page.text}
                 </Button>

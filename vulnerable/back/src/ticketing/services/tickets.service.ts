@@ -20,7 +20,7 @@ export class TicketsService {
   async findAll(query: PaginationParamsDto, user: User) {
     const rawQuery = this.ticketsRepository.createQueryBuilder('ticket').innerJoinAndSelect('ticket.user', 'user');
     if (user.role.name !== RoleType.ADMINISTRATOR) {
-      rawQuery.where(`user.id = ${user.id}`);
+      rawQuery.where(`ticket.userId = ${user.id}`);
     }
     const [results, totalResults] = await rawQuery.getManyAndCount();
     return { totalResults, results };
